@@ -1,12 +1,12 @@
-import os
-import numpy as np
-import cv2
-import pickle
-from flask import Flask, render_template, request, redirect, send_from_directory, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
 from werkzeug.utils import secure_filename
+import tensorflow as tf
+import os
+import cv2
+import numpy as np
+import pickle
 from tensorflow.keras.models import load_model
 
-# Flask app setup
 app = Flask(__name__)
 
 # Load model and label encoder
@@ -18,7 +18,6 @@ with open('Label_encoder.pkl', 'rb') as f:
 UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-
 
 # Process image and make predictions
 def process_image(image_path):
@@ -37,14 +36,12 @@ def process_image(image_path):
 
     return predicted_label, confidence_score
 
-
 # Routes
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
-# Handle file upload route (changed the name to avoid conflict)
+# File upload route
 @app.route('/upload_file', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -67,17 +64,14 @@ def upload_file():
                                predicted_label=predicted_label,
                                confidence_score=confidence_score)
 
-
 # Serve uploaded files
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-
 @app.route('/camera')
 def camera():
-    return render_template('camera.html')  # Fixed typo
-
+    return render_template('camera.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
