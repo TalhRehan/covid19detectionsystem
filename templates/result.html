@@ -2,9 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification Result</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            text-align: center;
+            padding: 20px;
+        }
+        img {
+            width: 50%;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+        .result-container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 10px 15px rgba(0,0,0,0.1);
+            display: inline-block;
+        }
+        .prediction_result {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+        p {
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
-
+    <div class="result-container">
+        <h1>Results</h1>
+        <img src="{{ url_for('uploaded_file', filename=filename) }}" alt="Uploaded Image">
+        <div class="prediction_result">
+            <h2>Predicted Status</h2>
+            <p>{{ predicted_label }}</p>
+            <h3>Confidence Score</h3>
+            <p>{{ '%.2f' % (confidence_score * 100) }}%</p>
+        </div>
+    </div>
+    <a href="{{ url_for('index') }}">Back to Home</a>
 </body>
 </html>
